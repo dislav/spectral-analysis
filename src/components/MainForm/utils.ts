@@ -8,7 +8,7 @@ export const moexQuery = async (
 ): Promise<MoexResponse | null> => {
     try {
         const { data } = await axios.get<MoexCandles>(
-            `http://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/${company}/candles.json`,
+            `https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/${company}/candles.json`,
             {
                 params: {
                     ...params,
