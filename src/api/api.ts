@@ -11,5 +11,6 @@ export const getLinearCombination = (data: number[][]) =>
     axiosInstance.post<{
         isStationarity: boolean;
         spread: number[];
+        pxx: number[];
         covariance: number;
     }>('/linear-combination', data);

@@ -17,6 +17,7 @@ import {
     Select,
     MenuItem,
     CompanyCode,
+    Description,
 } from './MainForm.styled';
 import Button from '@components/Button/Button';
 import { moexQuery } from '@components/MainForm/utils';
@@ -26,6 +27,7 @@ interface IMainForm {
     className?: string;
     setStocks: (stocks: Stock[]) => void;
     setSpread: (spread: number[]) => void;
+    setPeriodgram: (periodgram: number[]) => void;
 }
 
 const options: Option[] = [
@@ -66,7 +68,12 @@ const periodOptions: Option[] = [
     { value: Period.Month, label: 'Месяц' },
 ];
 
-const MainForm: React.FC<IMainForm> = ({ className, setStocks, setSpread }) => {
+const MainForm: React.FC<IMainForm> = ({
+    className,
+    setStocks,
+    setSpread,
+    setPeriodgram,
+}) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const { handleSubmit, control, watch } = useForm<FormFields>({
@@ -145,6 +152,7 @@ const MainForm: React.FC<IMainForm> = ({ className, setStocks, setSpread }) => {
                 ]);
 
                 setSpread(linearCombination.spread);
+                setPeriodgram(linearCombination.pxx);
             }
         } catch (e) {
             console.log(e);
@@ -170,7 +178,12 @@ const MainForm: React.FC<IMainForm> = ({ className, setStocks, setSpread }) => {
         <Container
             className={className}
             label="Основное"
-            description="Для продолжения выберите необходимый период, акции и нажмите «Получить данные»"
+            description={
+                <Description>
+                    Для продолжения выберите необходимый период, акции и нажмите
+                    «Получить данные»
+                </Description>
+            }
         >
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Group>

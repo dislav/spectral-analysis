@@ -20,6 +20,7 @@ import MainForm from '@components/MainForm/MainForm';
 const App: React.FC = () => {
     const [stocks, setStocks] = useState<Stock[]>([]);
     const [spread, setSpread] = useState<number[]>([]);
+    const [periodgram, setPeriodgram] = useState<number[]>([]);
 
     const keys = useMemo(() => {
         if (stocks.length)
@@ -28,12 +29,19 @@ const App: React.FC = () => {
         return [];
     }, [stocks]);
 
+    const arrayByKey = (key: string, array: number[]) =>
+        array.map((v) => ({ [key]: v }));
+
     return (
         <>
             <Header />
 
             <Container>
-                <MainForm setStocks={setStocks} setSpread={setSpread} />
+                <MainForm
+                    setStocks={setStocks}
+                    setSpread={setSpread}
+                    setPeriodgram={setPeriodgram}
+                />
 
                 {stocks.length > 0 && (
                     <Group label="Графики">
@@ -65,9 +73,7 @@ const App: React.FC = () => {
                 {spread.length > 0 && (
                     <Group label="Spread">
                         <ResponsiveContainer width="100%" height={460}>
-                            <LineChart
-                                data={spread.map((v) => ({ spread: v }))}
-                            >
+                            <LineChart data={arrayByKey('spread', spread)}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis />
                                 <YAxis />
@@ -78,6 +84,32 @@ const App: React.FC = () => {
                                     type="monotone"
                                     dataKey="spread"
                                     stroke="#8c2de8"
+                                    dot={false}
+                                />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </Group>
+                )}
+
+                {periodgram.length > 0 && (
+                    <Group label="Периодограмма">
+                        <ResponsiveContainer width="100%" height={460}>
+                            <LineChart
+                                data={arrayByKey('periodgram', periodgram)}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis />
+                                <YAxis
+                                    scale="log"
+                                    domain={['dataMin', 'dataMax']}
+                                />
+                                <Tooltip />
+                                <Legend />
+
+                                <Line
+                                    type="monotone"
+                                    dataKey="periodgram"
+                                    stroke="#e82dad"
                                     dot={false}
                                 />
                             </LineChart>

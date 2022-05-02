@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Breakpoint, up } from '@styles/breakpoints';
 
 export const Container = styled.div`
     position: relative;
@@ -18,11 +19,19 @@ export const Label = styled.span`
 `;
 
 export const Description = styled.div`
-    margin-bottom: 40px;
+    margin-bottom: 20px;
+
+    ${up(Breakpoint.LG)} {
+        margin-bottom: 40px;
+    }
 `;
 
 export const Content = styled.div`
     border: 1px solid #e0e0e0;
     border-radius: 10px;
-    padding: 32px;
+    padding: 24px 20px 20px;
+
+    ${up(Breakpoint.LG)} {
+        padding: 32px;
+    }
 `;
