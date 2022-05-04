@@ -1,7 +1,9 @@
 export interface FormFields {
     stock1: string;
     stock2: string;
+    file: FileList;
     period: Period;
+    method: Method;
 }
 
 export enum Company {
@@ -12,6 +14,11 @@ export enum Company {
     VTBR = 'VTBR',
     ROSN = 'ROSN',
     GMKN = 'GMKN',
+}
+
+export enum Method {
+    Fetch = 'fetch',
+    Self = 'self'
 }
 
 export enum Period {

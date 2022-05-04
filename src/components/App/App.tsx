@@ -9,6 +9,7 @@ import {
     Legend,
     ResponsiveContainer,
 } from 'recharts';
+import * as xlsx from 'xlsx';
 
 import { Stock } from '@components/App/types';
 
@@ -32,6 +33,30 @@ const App: React.FC = () => {
     const arrayByKey = (key: string, array: number[]) =>
         array.map((v) => ({ [key]: v }));
 
+    const onDownloadExcel = () => {
+        const workbook = xlsx.utils.book_new();
+
+        const stockSheet = xlsx.utils.json_to_sheet(stocks);
+        const spreadSheet = xlsx.utils.json_to_sheet(
+            spread.map((v) => ({ spread: v }))
+        );
+        const periodSheet = xlsx.utils.json_to_sheet(
+            periodgram.map((v) => ({ periodgram: v }))
+        );
+
+        xlsx.utils.book_append_sheet(workbook, stockSheet, 'Исходные данные');
+        xlsx.utils.book_append_sheet(workbook, spreadSheet, 'Спред');
+        xlsx.utils.book_append_sheet(workbook, periodSheet, 'Периодограмма');
+
+        xlsx.writeFile(workbook, 'spectral-analysis.xlsx');
+    };
+
+    const onClear = () => {
+        setStocks([]);
+        setSpread([]);
+        setPeriodgram([]);
+    };
+
     return (
         <>
             <Header />
@@ -41,6 +66,9 @@ const App: React.FC = () => {
                     setStocks={setStocks}
                     setSpread={setSpread}
                     setPeriodgram={setPeriodgram}
+                    onDownloadExcel={onDownloadExcel}
+                    onClear={onClear}
+                    showControls={!!periodgram.length}
                 />
 
                 {stocks.length > 0 && (
@@ -71,7 +99,7 @@ const App: React.FC = () => {
                 )}
 
                 {spread.length > 0 && (
-                    <Group label="Spread">
+                    <Group label="Спред">
                         <ResponsiveContainer width="100%" height={460}>
                             <LineChart data={arrayByKey('spread', spread)}>
                                 <CartesianGrid strokeDasharray="3 3" />

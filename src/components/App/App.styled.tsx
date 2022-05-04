@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
-import GroupComponent from '@components/Group/Group';
 import { Breakpoint, up } from '@styles/breakpoints';
+
+import GroupComponent from '@components/Group/Group';
 
 export const Container = styled.div`
     max-width: 1100px;

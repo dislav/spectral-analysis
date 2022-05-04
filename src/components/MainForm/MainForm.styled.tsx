@@ -4,11 +4,14 @@ import {
     MenuItem as MUIMenuItem,
     menuItemClasses,
     selectClasses,
+    buttonClasses,
 } from '@mui/material';
+
+import { Breakpoint, up } from '@styles/breakpoints';
 
 import GroupComponent from '../Group/Group';
 import SelectComponent from './Select/Select';
-import { Breakpoint, up } from '@styles/breakpoints';
+import ButtonComponent from '@components/Button/Button';
 
 export const Container = styled(GroupComponent)`
     margin-bottom: 60px;
@@ -31,6 +34,10 @@ export const Group = styled.div`
             margin-bottom: 0;
             margin-right: 20px;
         }
+    }
+
+    & .${buttonClasses.root} {
+        width: 100%;
     }
 
     ${up(Breakpoint.MD)} {
@@ -59,12 +66,60 @@ export const CompanyCode = styled.span`
     margin-left: auto;
 `;
 
-export const Description = styled.div`
+export const UploadDescription = styled.div`
+    color: #595959;
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    order: -1;
 
     ${up(Breakpoint.LG)} {
-        font-size: 16px;
-        line-height: 1.3;
+        margin-bottom: 0;
+        margin-left: 14px;
+        order: inherit;
+    }
+`;
+
+export const ExampleTooltip = styled.div`
+    font-size: 14px;
+`;
+
+export const Footer = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    & .${buttonClasses.root} {
+        width: 100%;
+        margin-bottom: 12px;
+
+        &:last-child {
+            margin-right: 0;
+            margin-bottom: 0;
+        }
+
+        ${up(Breakpoint.LG)} {
+            width: auto;
+            margin-bottom: 0;
+            margin-right: 20px;
+        }
+    }
+
+    ${up(Breakpoint.LG)} {
+        flex-direction: row;
+        align-items: center;
+    }
+`;
+
+export const ClearButton = styled(ButtonComponent)`
+    &.${buttonClasses.root} {
+        margin-left: auto;
+    }
+`;
+
+export const Errors = styled.div`
+    ul {
+        color: red;
+        margin-top: 20px;
+        margin-bottom: 0;
     }
 `;
