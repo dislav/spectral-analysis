@@ -44,7 +44,7 @@ const App: React.FC = () => {
             periodgram.map((v) => ({ periodgram: v }))
         );
 
-        xlsx.utils.book_append_sheet(workbook, stockSheet, 'Исходные данные');
+        xlsx.utils.book_append_sheet(workbook, stockSheet, 'Временные ряды');
         xlsx.utils.book_append_sheet(workbook, spreadSheet, 'Спред');
         xlsx.utils.book_append_sheet(workbook, periodSheet, 'Периодограмма');
 
@@ -72,7 +72,7 @@ const App: React.FC = () => {
                 />
 
                 {stocks.length > 0 && (
-                    <Group label="Графики">
+                    <Group label="Временные ряды">
                         <ResponsiveContainer width="100%" height={460}>
                             <LineChart data={stocks}>
                                 <CartesianGrid strokeDasharray="3 3" />

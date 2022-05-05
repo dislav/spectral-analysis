@@ -7,9 +7,18 @@ interface IButton extends ButtonProps {
     isLoading?: boolean;
 }
 
-const Button: React.FC<IButton> = ({ isLoading, children, ...props }) => {
+const Button: React.FC<IButton> = ({
+    isLoading,
+    children,
+    disabled,
+    ...props
+}) => {
     return (
-        <Container variant="outlined" {...props}>
+        <Container
+            variant="outlined"
+            disabled={disabled || isLoading}
+            {...props}
+        >
             {isLoading ? <Loader size={18} /> : children}
         </Container>
     );

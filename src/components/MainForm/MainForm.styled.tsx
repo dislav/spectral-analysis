@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {
-    formControlClasses,
     MenuItem as MUIMenuItem,
+    formControlClasses,
     menuItemClasses,
     selectClasses,
     buttonClasses,
