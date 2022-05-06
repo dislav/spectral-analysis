@@ -1,21 +1,21 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="512" height="512" fill="white"/>
-<path d="M76 258.842C76 232.681 97.2076 211.474 123.368 211.474V211.474C149.529 211.474 170.737 232.681 170.737 258.842V436H126C98.3858 436 76 413.614 76 386V258.842Z" fill="url(#paint0_linear_1_3)"/>
-<path d="M436 208.632C436 234.792 414.792 256 388.632 256V256C362.471 256 341.263 234.792 341.263 208.632L341.263 76L386 76C413.614 76 436 98.3858 436 126L436 208.632Z" fill="url(#paint1_linear_1_3)"/>
+<rect width="512" height="512" rx="100" fill="white"/>
+<path d="M76 258.842C76 232.681 97.2076 211.474 123.368 211.474V211.474C149.529 211.474 170.737 232.681 170.737 258.842V436H126C98.3858 436 76 413.614 76 386V258.842Z" fill="url(#paint0_linear_3_2)"/>
+<path d="M436 208.632C436 234.792 414.792 256 388.632 256V256C362.471 256 341.263 234.792 341.263 208.632L341.263 76L386 76C413.614 76 436 98.3858 436 126L436 208.632Z" fill="url(#paint1_linear_3_2)"/>
 <rect x="436" y="436" width="94.7369" height="151.579" rx="47.3684" transform="rotate(-180 436 436)" fill="#F1F1F1"/>
 <rect x="170.737" y="189.684" width="94.7369" height="113.684" rx="47.3684" transform="rotate(-180 170.737 189.684)" fill="#F1F1F1"/>
 <circle cx="256" cy="388.632" r="47.3684" fill="#F1F1F1"/>
-<circle cx="256" cy="256" r="47.3684" fill="url(#paint2_linear_1_3)"/>
+<circle cx="256" cy="256" r="47.3684" fill="url(#paint2_linear_3_2)"/>
 <defs>
-<linearGradient id="paint0_linear_1_3" x1="123.368" y1="211.474" x2="123.368" y2="436" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_3_2" x1="123.368" y1="211.474" x2="123.368" y2="436" gradientUnits="userSpaceOnUse">
 <stop stop-color="#3CA1FF"/>
 <stop offset="1" stop-color="#6527EA"/>
 </linearGradient>
-<linearGradient id="paint1_linear_1_3" x1="388.632" y1="256" x2="388.632" y2="76" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint1_linear_3_2" x1="388.632" y1="256" x2="388.632" y2="76" gradientUnits="userSpaceOnUse">
 <stop stop-color="#49EF9F"/>
 <stop offset="1" stop-color="#24DFD4"/>
 </linearGradient>
-<linearGradient id="paint2_linear_1_3" x1="256" y1="208.632" x2="256" y2="303.368" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint2_linear_3_2" x1="256" y1="208.632" x2="256" y2="303.368" gradientUnits="userSpaceOnUse">
 <stop stop-color="#F56260"/>
 <stop offset="1" stop-color="#F58D60"/>
 </linearGradient>
