@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: 'https://specapi.studio-mind.ru',
+    baseURL: 'https://api.spectral-analysis.ru',
 });
 
 export const checkStationarity = (data: number[]) =>
