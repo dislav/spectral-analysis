@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 import {
     MenuItem as MUIMenuItem,
+    Alert as MUIAlert,
     formControlClasses,
     menuItemClasses,
     selectClasses,
     buttonClasses,
+    alertClasses,
 } from '@mui/material';
 
 import { Breakpoint, up } from '@styles/breakpoints';
@@ -116,10 +118,8 @@ export const ClearButton = styled(ButtonComponent)`
     }
 `;
 
-export const Errors = styled.div`
-    ul {
-        color: red;
-        margin-top: 20px;
-        margin-bottom: 0;
+export const Alert = styled(MUIAlert)`
+    &.${alertClasses.root} {
+        margin-top: 24px;
     }
 `;

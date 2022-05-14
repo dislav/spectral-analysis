@@ -1,13 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { SubmitHandler, useForm, Controller } from 'react-hook-form';
+import React, { useCallback, useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import { FormControl, FormLabel, RadioGroup, Tooltip } from '@mui/material';
-import dayjs from 'dayjs';
 
 import {
     Company,
     FormFields,
     Method,
-    MoexQueryParams,
     Period,
 } from '@components/MainForm/types';
 import { Option } from '@components/Select/types';
@@ -23,14 +21,13 @@ import {
     ExampleTooltip,
     Footer,
     ClearButton,
-    Errors,
+    Alert,
 } from './MainForm.styled';
 import Button from '@components/Button/Button';
 import Radio from '@components/Radio/Radio';
 import Upload from '@components/Upload/Upload';
 
-import { moexQuery } from '@components/MainForm/utils';
-import { checkStationarity, getLinearCombination } from '@api/api';
+import { useSpectralAnalysis } from '@components/MainForm/hooks';
 
 interface IMainForm {
     className?: string;
@@ -89,9 +86,6 @@ const MainForm: React.FC<IMainForm> = ({
     onClear,
     showControls,
 }) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-
     const { handleSubmit, register, control, watch, resetField } =
         useForm<FormFields>({
             defaultValues: {
@@ -102,8 +96,6 @@ const MainForm: React.FC<IMainForm> = ({
             },
         });
 
-    const timeFormat = 'YYYY-MM-DD';
-
     const getCodeError = useCallback((code: string) => {
         const title =
             options.find((option) => option.value === code)?.label || code;
@@ -111,161 +103,12 @@ const MainForm: React.FC<IMainForm> = ({
         return `«${title}» является стационарным временным рядом`;
     }, []);
 
-    const onSubmit: SubmitHandler<FormFields> = useCallback(
-        async (data) => {
-            onClear();
-
-            setIsLoading(true);
-            setError(null);
-
-            if (data.method === Method.Fetch) {
-                const period = {
-                    [Period.Year]: [1, 'year'],
-                    [Period.Half]: [6, 'month'],
-                    [Period.Quarter]: [3, 'month'],
-                    [Period.Month]: [1, 'month'],
-                }[data.period];
-
-                const from = dayjs()
-                    .subtract(period[0] as number, period[1] as string)
-                    .format(timeFormat);
-                const till = dayjs().format(timeFormat);
-
-                const params: MoexQueryParams = {
-                    from,
-                    till,
-                };
-
-                try {
-                    const stock1 = await moexQuery(
-                        data.stock1 as Company,
-                        params
-                    );
-                    const stock2 = await moexQuery(
-                        data.stock2 as Company,
-                        params
-                    );
-
-                    if (stock1 && stock2) {
-                        const { data: stationarity1 } = await checkStationarity(
-                            stock1.data.map((stock) => stock.value)
-                        );
-
-                        if (stationarity1.isStationarity) {
-                            throw new Error(getCodeError(stock1.code));
-                        }
-
-                        const { data: stationarity2 } = await checkStationarity(
-                            stock2.data.map((stock) => stock.value)
-                        );
-
-                        if (stationarity2.isStationarity) {
-                            throw new Error(getCodeError(stock2.code));
-                        }
-
-                        let mergedStock: Stock[] = [];
-                        const minLength = Math.min(
-                            stock1.data.length,
-                            stock2.data.length
-                        );
-
-                        for (let i = 0; i < minLength; i++) {
-                            mergedStock = [
-                                ...mergedStock,
-                                {
-                                    [stock1.code]: stock1.data[i].value,
-                                    [stock2.code]: stock2.data[i].value,
-                                    date: stock1.data[i].date,
-                                },
-                            ];
-                        }
-
-                        setStocks(mergedStock);
-
-                        const { data: linearCombination } =
-                            await getLinearCombination([
-                                mergedStock.map(
-                                    (stock) => stock[stock1.code]
-                                ) as number[],
-                                mergedStock.map(
-                                    (stock) => stock[stock2.code]
-                                ) as number[],
-                            ]);
-
-                        setSpread(linearCombination.spread);
-                        setPeriodgram(linearCombination.pxx);
-                    }
-
-                    setIsLoading(false);
-                } catch (e) {
-                    setError((e as Error).message);
-                    setIsLoading(false);
-                }
-            } else {
-                const fileReader = new FileReader();
-
-                fileReader.onload = async () => {
-                    try {
-                        const parsedFile = JSON.parse(
-                            fileReader.result as string
-                        );
-                        const [code1, code2] = Object.keys(parsedFile);
-
-                        const { data: stationarity1 } = await checkStationarity(
-                            parsedFile[code1]
-                        );
-
-                        if (stationarity1.isStationarity) {
-                            throw new Error(getCodeError(code1));
-                        }
-
-                        const { data: stationarity2 } = await checkStationarity(
-                            parsedFile[code2]
-                        );
-
-                        if (stationarity2.isStationarity) {
-                            throw new Error(getCodeError(code2));
-                        }
-
-                        let mergedStock: Stock[] = [];
-                        const minLength = Math.min(
-                            parsedFile[code1].length,
-                            parsedFile[code2].length
-                        );
-
-                        for (let i = 0; i < minLength; i++) {
-                            mergedStock = [
-                                ...mergedStock,
-                                {
-                                    [code1]: parsedFile[code1][i],
-                                    [code2]: parsedFile[code2][i],
-                                    date: i,
-                                },
-                            ];
-                        }
-
-                        setStocks(mergedStock);
-
-                        const { data: linearCombination } =
-                            await getLinearCombination([
-                                parsedFile[code1],
-                                parsedFile[code2],
-                            ]);
-
-                        setSpread(linearCombination.spread);
-                        setPeriodgram(linearCombination.pxx);
-
-                        setIsLoading(false);
-                    } catch (e) {
-                        setError((e as Error).message);
-                        setIsLoading(false);
-                    }
-                };
-
-                fileReader.readAsText(data.file[0]);
-            }
-        },
-        [setStocks, setSpread, setPeriodgram, onClear, isLoading, error]
+    const [onSubmit, { setError, isLoading, error }] = useSpectralAnalysis(
+        setStocks,
+        setSpread,
+        setPeriodgram,
+        onClear,
+        getCodeError
     );
 
     const renderOption = useCallback(
@@ -288,6 +131,7 @@ const MainForm: React.FC<IMainForm> = ({
 
     useEffect(() => {
         onClearHandler();
+        setError(null);
     }, [method]);
 
     const selfDisabled =
@@ -424,13 +268,7 @@ const MainForm: React.FC<IMainForm> = ({
                     )}
                 </Footer>
 
-                {error && (
-                    <Errors>
-                        <ul>
-                            <li>{error}</li>
-                        </ul>
-                    </Errors>
-                )}
+                {error && <Alert severity="error">{error}</Alert>}
             </form>
         </Container>
     );
