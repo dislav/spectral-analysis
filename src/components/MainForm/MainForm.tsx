@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { FormControl, FormLabel, RadioGroup, Tooltip } from '@mui/material';
+import { FormControl, FormLabel, RadioGroup } from '@mui/material';
 
 import {
     Company,
@@ -18,7 +18,6 @@ import {
     MenuItem,
     CompanyCode,
     UploadDescription,
-    ExampleTooltip,
     Footer,
     ClearButton,
     Alert,
@@ -26,6 +25,7 @@ import {
 import Button from '@components/Button/Button';
 import Radio from '@components/Radio/Radio';
 import Upload from '@components/Upload/Upload';
+import Tooltip from '@components/App/Tooltip/Tooltip';
 
 import { useSpectralAnalysis } from '@components/MainForm/hooks';
 
@@ -218,9 +218,8 @@ const MainForm: React.FC<IMainForm> = ({
                             Выберите файл формата .json, который содержит два
                             ключа с массивами чисел
                             <Tooltip
-                                placement="top"
                                 title={
-                                    <ExampleTooltip>
+                                    <>
                                         Пример файла JSON:
                                         <pre>
                                             <code
@@ -229,12 +228,9 @@ const MainForm: React.FC<IMainForm> = ({
                                                 }}
                                             />
                                         </pre>
-                                    </ExampleTooltip>
+                                    </>
                                 }
-                                arrow
-                            >
-                                {Info}
-                            </Tooltip>
+                            />
                         </UploadDescription>
                     </Group>
                 )}

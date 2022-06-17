@@ -91,10 +91,6 @@ export const UploadDescription = styled.div`
     }
 `;
 
-export const ExampleTooltip = styled.div`
-    font-size: 14px;
-`;
-
 export const Footer = styled.div`
     display: flex;
     flex-direction: column;
