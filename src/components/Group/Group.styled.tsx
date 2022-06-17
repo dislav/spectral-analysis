@@ -8,7 +8,7 @@ export const Container = styled.div`
 export const Label = styled.span`
     position: absolute;
     top: 0;
-    left: 28px;
+    left: 16px;
     color: #5b5b5b;
     font-size: 14px;
     font-weight: 500;
@@ -16,6 +16,10 @@ export const Label = styled.span`
     background: white;
     transform: translateY(-50%);
     padding: 0 4px;
+
+    ${up(Breakpoint.LG)} {
+        left: 28px;
+    }
 `;
 
 export const Description = styled.div`

@@ -69,11 +69,20 @@ export const CompanyCode = styled.span`
 `;
 
 export const UploadDescription = styled.div`
+    display: flex;
+    align-items: center;
     color: #595959;
     font-size: 14px;
     line-height: 1.2;
     margin-bottom: 10px;
     order: -1;
+
+    svg {
+        width: 20px;
+        height: 20px;
+        margin-left: 4px;
+        cursor: pointer;
+    }
 
     ${up(Breakpoint.LG)} {
         margin-bottom: 0;

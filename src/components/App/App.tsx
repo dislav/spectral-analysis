@@ -9,11 +9,14 @@ import {
     Legend,
     ResponsiveContainer,
 } from 'recharts';
+import { useMediaQuery } from 'react-responsive';
+import { roundTo } from 'round-to';
 import * as xlsx from 'xlsx';
 
 import { Stock } from '@components/App/types';
+import { Breakpoint, breakpoints } from '@styles/breakpoints';
 
-import { Container, Group } from './App.styled';
+import { Container, Group, Label, TooltipApp } from './App.styled';
 
 import Header from '@components/Header/Header';
 import MainForm from '@components/MainForm/MainForm';
@@ -57,6 +60,9 @@ const App: React.FC = () => {
         setPeriodgram([]);
     };
 
+    const isMobile = useMediaQuery({ maxWidth: breakpoints[Breakpoint.MD] });
+    const graphHeight = isMobile ? 360 : 460;
+
     return (
         <>
             <Header />
@@ -72,12 +78,25 @@ const App: React.FC = () => {
                 />
 
                 {stocks.length > 0 && (
-                    <Group label="Временные ряды">
-                        <ResponsiveContainer width="100%" height={460}>
+                    <Group
+                        label={
+                            <Label>
+                                Временные ряды (Котировки акций)
+                                <TooltipApp title="Временной ряд (динамический ряд, ряд динамики) — собранный в разные моменты времени статистический материал о значении каких-либо параметров (в простейшем случае одного) исследуемого процесса." />
+                            </Label>
+                        }
+                    >
+                        <ResponsiveContainer width="100%" height={graphHeight}>
                             <LineChart data={stocks}>
                                 <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="date" />
-                                <YAxis />
+                                <XAxis
+                                    dataKey="date"
+                                    textAnchor="end"
+                                    angle={-45}
+                                    height={90}
+                                    interval={isMobile ? 30 : 8}
+                                />
+                                <YAxis tickCount={8} />
                                 <Tooltip />
                                 <Legend />
 
@@ -99,12 +118,19 @@ const App: React.FC = () => {
                 )}
 
                 {spread.length > 0 && (
-                    <Group label="Спред">
-                        <ResponsiveContainer width="100%" height={460}>
+                    <Group
+                        label={
+                            <Label>
+                                Спред
+                                <TooltipApp title="Спред — разность между двумя временными рядами в один и тот же момент времени." />
+                            </Label>
+                        }
+                    >
+                        <ResponsiveContainer width="100%" height={graphHeight}>
                             <LineChart data={arrayByKey('spread', spread)}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis />
-                                <YAxis />
+                                <YAxis tickCount={8} />
                                 <Tooltip />
                                 <Legend />
 
@@ -120,16 +146,30 @@ const App: React.FC = () => {
                 )}
 
                 {periodgram.length > 0 && (
-                    <Group label="Периодограмма">
-                        <ResponsiveContainer width="100%" height={460}>
+                    <Group
+                        label={
+                            <Label>
+                                Периодограмма
+                                <TooltipApp title="Периодограмма — оценка спектральной плотности мощности (СПМ), основанная на вычислении квадрата модуля преобразования Фурье последовательности данных." />
+                            </Label>
+                        }
+                    >
+                        <ResponsiveContainer width="100%" height={graphHeight}>
                             <LineChart
                                 data={arrayByKey('periodgram', periodgram)}
                             >
                                 <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis />
+                                <XAxis
+                                    interval={isMobile ? 'preserveStart' : 4}
+                                />
                                 <YAxis
                                     scale="log"
                                     domain={['dataMin', 'dataMax']}
+                                    tickFormatter={(value) =>
+                                        value.toString().length > 5
+                                            ? roundTo(value, 3)
+                                            : value
+                                    }
                                 />
                                 <Tooltip />
                                 <Legend />

@@ -6,7 +6,7 @@ export enum Breakpoint {
     XXL = 'xxl',
 }
 
-const breakpoints = {
+export const breakpoints = {
     [Breakpoint.SM]: 640,
     [Breakpoint.MD]: 768,
     [Breakpoint.LG]: 1024,

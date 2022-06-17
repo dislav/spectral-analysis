@@ -77,6 +77,15 @@ const periodOptions: Option[] = [
     { value: Period.Month, label: 'Месяц' },
 ];
 
+const Info = (
+    <svg width="24px" height="24px" viewBox="0 0 24 24">
+        <path
+            d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+            fill="currentColor"
+        />
+    </svg>
+);
+
 const MainForm: React.FC<IMainForm> = ({
     className,
     setStocks,
@@ -205,28 +214,28 @@ const MainForm: React.FC<IMainForm> = ({
                             fileName={file?.[0]?.name || null}
                             disabled={isLoading}
                         />
-
-                        <Tooltip
-                            placement="top"
-                            title={
-                                <ExampleTooltip>
-                                    Пример:
-                                    <pre>
-                                        <code
-                                            dangerouslySetInnerHTML={{
-                                                __html: `{\n  "stock1": [4, 40, 32, ...],\n  "stock2": [6, 2, 1, ...]\n}`,
-                                            }}
-                                        />
-                                    </pre>
-                                </ExampleTooltip>
-                            }
-                            arrow
-                        >
-                            <UploadDescription>
-                                Выберите файл формата .json, который содержит
-                                два ключа с массивами чисел
-                            </UploadDescription>
-                        </Tooltip>
+                        <UploadDescription>
+                            Выберите файл формата .json, который содержит два
+                            ключа с массивами чисел
+                            <Tooltip
+                                placement="top"
+                                title={
+                                    <ExampleTooltip>
+                                        Пример файла JSON:
+                                        <pre>
+                                            <code
+                                                dangerouslySetInnerHTML={{
+                                                    __html: `{\n  "stock1": [4, 40, 32, ...],\n  "stock2": [6, 2, 1, ...]\n}`,
+                                                }}
+                                            />
+                                        </pre>
+                                    </ExampleTooltip>
+                                }
+                                arrow
+                            >
+                                {Info}
+                            </Tooltip>
+                        </UploadDescription>
                     </Group>
                 )}
 
