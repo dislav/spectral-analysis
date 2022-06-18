@@ -143,7 +143,7 @@ const App: React.FC = () => {
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis
                                     height={44}
-                                    interval={8}
+                                    interval={isMobile ? 'preserveStart' : 8}
                                     label={{
                                         value: 'Индекс',
                                         position: 'insideBottomRight',
