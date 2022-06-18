@@ -95,8 +95,20 @@ const App: React.FC = () => {
                                     angle={-45}
                                     height={90}
                                     interval={isMobile ? 30 : 8}
+                                    label={{
+                                        value: 'Дата',
+                                        position: 'insideBottomRight',
+                                        offset: 0,
+                                    }}
                                 />
-                                <YAxis tickCount={8} />
+                                <YAxis
+                                    tickCount={8}
+                                    label={{
+                                        value: 'Значение',
+                                        angle: -90,
+                                        position: 'insideLeft',
+                                    }}
+                                />
                                 <Tooltip />
                                 <Legend />
 
@@ -129,8 +141,23 @@ const App: React.FC = () => {
                         <ResponsiveContainer width="100%" height={graphHeight}>
                             <LineChart data={arrayByKey('spread', spread)}>
                                 <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis />
-                                <YAxis tickCount={8} />
+                                <XAxis
+                                    height={44}
+                                    interval={8}
+                                    label={{
+                                        value: 'Индекс',
+                                        position: 'insideBottomRight',
+                                        offset: 0
+                                    }}
+                                />
+                                <YAxis
+                                    tickCount={8}
+                                    label={{
+                                        value: 'Значение',
+                                        angle: -90,
+                                        position: 'insideLeft',
+                                    }}
+                                />
                                 <Tooltip />
                                 <Legend />
 
@@ -160,7 +187,13 @@ const App: React.FC = () => {
                             >
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis
+                                    height={44}
                                     interval={isMobile ? 'preserveStart' : 4}
+                                    label={{
+                                        value: 'Индекс',
+                                        position: 'insideBottomRight',
+                                        offset: 0
+                                    }}
                                 />
                                 <YAxis
                                     scale="log"
@@ -170,6 +203,11 @@ const App: React.FC = () => {
                                             ? roundTo(value, 3)
                                             : value
                                     }
+                                    label={{
+                                        value: 'Значение',
+                                        angle: -90,
+                                        position: 'insideLeft',
+                                    }}
                                 />
                                 <Tooltip />
                                 <Legend />
