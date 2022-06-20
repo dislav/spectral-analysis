@@ -33,8 +33,11 @@ const App: React.FC = () => {
         return [];
     }, [stocks]);
 
-    const arrayByKey = (key: string, array: number[]) =>
-        array.map((v) => ({ [key]: v }));
+    const arrayByKey = (
+        key: string,
+        array: number[],
+        cb?: (index: number) => { [key: string]: any }
+    ) => array.map((v, index) => ({ [key]: v, ...(cb?.(index) ?? {}) }));
 
     const onDownloadExcel = () => {
         const workbook = xlsx.utils.book_new();
@@ -62,6 +65,10 @@ const App: React.FC = () => {
 
     const isMobile = useMediaQuery({ maxWidth: breakpoints[Breakpoint.MD] });
     const graphHeight = isMobile ? 360 : 460;
+
+    const stocksDesktopInterval = stocks.length > 104 ? 8 : 4;
+    const spreadDesktopInterval = spread.length > 104 ? 8 : 4;
+    const periodogramDesktopInterval = periodgram.length > 52 ? 4 : 2;
 
     return (
         <>
@@ -91,12 +98,14 @@ const App: React.FC = () => {
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis
                                     dataKey="date"
+                                    height={90}
+                                    interval={
+                                        isMobile ? 30 : stocksDesktopInterval
+                                    }
                                     textAnchor="end"
                                     angle={-45}
-                                    height={90}
-                                    interval={isMobile ? 30 : 8}
                                     label={{
-                                        value: 'Дата',
+                                        value: 'Время',
                                         position: 'insideBottomRight',
                                         offset: 0,
                                     }}
@@ -104,7 +113,7 @@ const App: React.FC = () => {
                                 <YAxis
                                     tickCount={8}
                                     label={{
-                                        value: 'Значение',
+                                        value: 'Цена',
                                         angle: -90,
                                         position: 'insideLeft',
                                     }}
@@ -133,27 +142,54 @@ const App: React.FC = () => {
                     <Group
                         label={
                             <Label>
-                                Спред
-                                <TooltipApp title="Спред — разность между двумя временными рядами в один и тот же момент времени." />
+                                Линейная комбинация
+                                <TooltipApp
+                                    title={
+                                        <>
+                                            Линейная комбинация — выражение,
+                                            построенное на множестве элементов
+                                            путём умножения каждого элемента на
+                                            коэффициенты с последующим сложением
+                                            результатов (например, линейной
+                                            комбинацией x и y будет выражение
+                                            вида ax + by, где a и b —
+                                            коэффициенты)
+                                            <br />
+                                            <br />
+                                            <i>L – линейная комбинация</i>
+                                        </>
+                                    }
+                                />
                             </Label>
                         }
                     >
                         <ResponsiveContainer width="100%" height={graphHeight}>
-                            <LineChart data={arrayByKey('spread', spread)}>
+                            <LineChart
+                                data={arrayByKey('spread', spread, (index) => ({
+                                    date: stocks[index].date,
+                                }))}
+                            >
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis
-                                    height={44}
-                                    interval={isMobile ? 'preserveStart' : 8}
+                                    dataKey="date"
+                                    height={90}
+                                    interval={
+                                        isMobile
+                                            ? 'preserveStart'
+                                            : spreadDesktopInterval
+                                    }
+                                    textAnchor="end"
+                                    angle={-45}
                                     label={{
-                                        value: 'Индекс',
+                                        value: 'Время',
                                         position: 'insideBottomRight',
-                                        offset: 0
+                                        offset: 0,
                                     }}
                                 />
                                 <YAxis
                                     tickCount={8}
                                     label={{
-                                        value: 'Значение',
+                                        value: 'Значение L',
                                         angle: -90,
                                         position: 'insideLeft',
                                     }}
@@ -188,11 +224,15 @@ const App: React.FC = () => {
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis
                                     height={44}
-                                    interval={isMobile ? 'preserveStart' : 4}
+                                    interval={
+                                        isMobile
+                                            ? 'preserveStart'
+                                            : periodogramDesktopInterval
+                                    }
                                     label={{
-                                        value: 'Индекс',
+                                        value: 'Частота',
                                         position: 'insideBottomRight',
-                                        offset: 0
+                                        offset: 0,
                                     }}
                                 />
                                 <YAxis
@@ -204,7 +244,7 @@ const App: React.FC = () => {
                                             : value
                                     }
                                     label={{
-                                        value: 'Значение',
+                                        value: 'Спектр',
                                         angle: -90,
                                         position: 'insideLeft',
                                     }}
