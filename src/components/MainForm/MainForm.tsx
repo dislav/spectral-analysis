@@ -34,6 +34,7 @@ interface IMainForm {
     setStocks: (stocks: Stock[]) => void;
     setSpread: (spread: number[]) => void;
     setPeriodgram: (periodgram: number[]) => void;
+    setMethod: (method: Method) => void;
     onDownloadExcel: () => void;
     onClear: () => void;
     showControls?: boolean;
@@ -91,6 +92,7 @@ const MainForm: React.FC<IMainForm> = ({
     setStocks,
     setSpread,
     setPeriodgram,
+    setMethod,
     onDownloadExcel,
     onClear,
     showControls,
@@ -140,6 +142,7 @@ const MainForm: React.FC<IMainForm> = ({
 
     useEffect(() => {
         onClearHandler();
+        setMethod(method);
         setError(null);
     }, [method]);
 

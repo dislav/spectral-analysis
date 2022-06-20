@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import {
-    LineChart,
+    CartesianGrid,
+    Legend,
     Line,
+    LineChart,
+    ResponsiveContainer,
+    Tooltip,
     XAxis,
     YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend,
-    ResponsiveContainer,
 } from 'recharts';
 import { useMediaQuery } from 'react-responsive';
 import { roundTo } from 'round-to';
@@ -15,6 +15,7 @@ import * as xlsx from 'xlsx';
 
 import { Stock } from '@components/App/types';
 import { Breakpoint, breakpoints } from '@styles/breakpoints';
+import { Method } from '@components/MainForm/types';
 
 import { Container, Group, Label, TooltipApp } from './App.styled';
 
@@ -22,6 +23,8 @@ import Header from '@components/Header/Header';
 import MainForm from '@components/MainForm/MainForm';
 
 const App: React.FC = () => {
+    const [method, setMethod] = useState<Method>(Method.Fetch);
+
     const [stocks, setStocks] = useState<Stock[]>([]);
     const [spread, setSpread] = useState<number[]>([]);
     const [periodgram, setPeriodgram] = useState<number[]>([]);
@@ -70,6 +73,9 @@ const App: React.FC = () => {
     const spreadDesktopInterval = spread.length > 104 ? 8 : 4;
     const periodogramDesktopInterval = periodgram.length > 52 ? 4 : 2;
 
+    const isFetchMethod = method === Method.Fetch;
+    const xAxisAngle = isFetchMethod ? -45 : 0;
+
     return (
         <>
             <Header />
@@ -79,6 +85,7 @@ const App: React.FC = () => {
                     setStocks={setStocks}
                     setSpread={setSpread}
                     setPeriodgram={setPeriodgram}
+                    setMethod={setMethod}
                     onDownloadExcel={onDownloadExcel}
                     onClear={onClear}
                     showControls={!!periodgram.length}
@@ -98,12 +105,12 @@ const App: React.FC = () => {
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis
                                     dataKey="date"
-                                    height={90}
+                                    height={isFetchMethod ? 90 : 44}
                                     interval={
                                         isMobile ? 30 : stocksDesktopInterval
                                     }
                                     textAnchor="end"
-                                    angle={-45}
+                                    angle={xAxisAngle}
                                     label={{
                                         value: 'Время',
                                         position: 'insideBottomRight',
@@ -172,14 +179,14 @@ const App: React.FC = () => {
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis
                                     dataKey="date"
-                                    height={90}
+                                    height={isFetchMethod ? 90 : 44}
                                     interval={
                                         isMobile
                                             ? 'preserveStart'
                                             : spreadDesktopInterval
                                     }
                                     textAnchor="end"
-                                    angle={-45}
+                                    angle={xAxisAngle}
                                     label={{
                                         value: 'Время',
                                         position: 'insideBottomRight',
