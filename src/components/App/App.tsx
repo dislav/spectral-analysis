@@ -42,19 +42,25 @@ const App: React.FC = () => {
         cb?: (index: number) => { [key: string]: any }
     ) => array.map((v, index) => ({ [key]: v, ...(cb?.(index) ?? {}) }));
 
+    const spreadValues = arrayByKey('spread', spread, (index) => ({
+        date: stocks[index].date,
+    }));
+
     const onDownloadExcel = () => {
         const workbook = xlsx.utils.book_new();
 
         const stockSheet = xlsx.utils.json_to_sheet(stocks);
-        const spreadSheet = xlsx.utils.json_to_sheet(
-            spread.map((v) => ({ spread: v }))
-        );
+        const spreadSheet = xlsx.utils.json_to_sheet(spreadValues);
         const periodSheet = xlsx.utils.json_to_sheet(
             periodgram.map((v) => ({ periodgram: v }))
         );
 
         xlsx.utils.book_append_sheet(workbook, stockSheet, 'Временные ряды');
-        xlsx.utils.book_append_sheet(workbook, spreadSheet, 'Спред');
+        xlsx.utils.book_append_sheet(
+            workbook,
+            spreadSheet,
+            'Линейная комбинация'
+        );
         xlsx.utils.book_append_sheet(workbook, periodSheet, 'Периодограмма');
 
         xlsx.writeFile(workbook, 'spectral-analysis.xlsx');
@@ -171,11 +177,7 @@ const App: React.FC = () => {
                         }
                     >
                         <ResponsiveContainer width="100%" height={graphHeight}>
-                            <LineChart
-                                data={arrayByKey('spread', spread, (index) => ({
-                                    date: stocks[index].date,
-                                }))}
-                            >
+                            <LineChart data={spreadValues}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis
                                     dataKey="date"
