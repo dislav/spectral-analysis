@@ -98,8 +98,8 @@ const MainForm: React.FC<IMainForm> = ({
     const { handleSubmit, register, control, watch, resetField } =
         useForm<FormFields>({
             defaultValues: {
-                period: Period.Year,
-                stock1: Company.GAZP,
+                period: Period.Quarter,
+                stock1: Company.ROSN,
                 stock2: Company.SBER,
                 method: Method.Fetch,
             },
