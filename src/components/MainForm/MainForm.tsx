@@ -102,7 +102,7 @@ const MainForm: React.FC<IMainForm> = ({
             defaultValues: {
                 period: Period.Quarter,
                 stock1: Company.ROSN,
-                stock2: Company.GAZP,
+                stock2: Company.SBER,
                 method: Method.Fetch,
             },
         });

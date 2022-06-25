@@ -139,12 +139,19 @@ const App: React.FC = () => {
                                     dataKey={keys[0]}
                                     stroke="#ec3c3c"
                                     dot={false}
+                                    strokeWidth={3}
+                                    strokeLinecap="round"
+                                    activeDot={{ r: 7, strokeWidth: 4 }}
                                 />
                                 <Line
                                     type="monotone"
                                     dataKey={keys[1]}
                                     stroke="#3a88e1"
                                     dot={false}
+                                    strokeWidth={3.5}
+                                    strokeDasharray="8 8"
+                                    strokeLinecap="round"
+                                    activeDot={{ r: 7, strokeWidth: 4 }}
                                 />
                             </LineChart>
                         </ResponsiveContainer>
@@ -163,10 +170,7 @@ const App: React.FC = () => {
                                             построенное на множестве элементов
                                             путём умножения каждого элемента на
                                             коэффициенты с последующим сложением
-                                            результатов (например, линейной
-                                            комбинацией x и y будет выражение
-                                            вида ax + by, где a и b —
-                                            коэффициенты)
+                                            результатов
                                             <br />
                                             <br />
                                             <i>L – линейная комбинация</i>
@@ -211,6 +215,9 @@ const App: React.FC = () => {
                                     dataKey="spread"
                                     stroke="#8c2de8"
                                     dot={false}
+                                    strokeWidth={3}
+                                    strokeLinecap="round"
+                                    activeDot={{ r: 7, strokeWidth: 4 }}
                                 />
                             </LineChart>
                         </ResponsiveContainer>
@@ -266,6 +273,9 @@ const App: React.FC = () => {
                                     dataKey="periodgram"
                                     stroke="#e82dad"
                                     dot={false}
+                                    strokeWidth={3}
+                                    strokeLinecap="round"
+                                    activeDot={{ r: 7, strokeWidth: 4 }}
                                 />
                             </LineChart>
                         </ResponsiveContainer>
